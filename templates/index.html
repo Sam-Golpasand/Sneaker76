@@ -16,19 +16,20 @@
 </div>
 
 <div class="container mx-auto"> 
-  <button class=" btn btn-circle carousel-button prev" style="margin-left: 7% ;"  onclick="moveSlide(-1)">&#10094;</button>
-<div id="carousel" class="carousel">
 
+<div id="carousel" class="carousel">
+  <button class=" btn btn-circle carousel-button prev"  onclick="moveSlide(-1)">&#10094;</button>
     <div class="carousel-slides">
+
       {% for item in featured %}
       <div class="carousel-slide">
-        <div class="card bg-base-100 " >
-          <figure><img src="{{ item.picture }}" class="card-img" id="pic" alt="Shoes" /></figure>
+        <div class="card bg-base-100 "  >
+          <figure><img src="{{ item.picture }}" id="pic" alt="Shoes" /></figure>
           <div class="card-body">
             <h2 class="card-title">
               <a href="/redirect">
                 <strong>{{ item.name }}</strong>
-                <p class="price">{{ item.price }} DKK</p>
+                <p id="DKK"> {{ item.price }} <span id="DKK2">DKK</span> </p>
               </a>
             </h2>
             <div class="card-actions justify-start">
@@ -38,10 +39,11 @@
         </div>
       </div>
       {% endfor %}
-    </div>
 
+    </div>
+    <button class=" btn btn-circle carousel-button next" onclick="moveSlide(1)">&#10095;</button> 
   </div>
-  <button class=" btn btn-circle carousel-button next" style="margin-right: 7% ;" onclick="moveSlide(1)">&#10095;</button> 
+
 </div>
   
   

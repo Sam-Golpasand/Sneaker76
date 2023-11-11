@@ -1,6 +1,41 @@
-from flask import Flask, render_template
-import random
+from flask import Flask, flash, redirect, render_template, request, session
+from flask_session import Session
+from flask_bcrypt import Bcrypt
+import requests
+import random 
+from sam import login_required
+import sqlite3
+import bcrypt
+
 app = Flask(__name__)
+bcrypt = Bcrypt(app)
+conn = sqlite3.connect("users.db")
+
+c = conn.cursor()
+
+
+
+c.execute("""CREATE TABLE IF NOT EXISTS products (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, description TEXT, price DECIMAL(10, 2) NOT NULL, picture TEXT, stock INTEGER NOT NULL, category TEXT);""")
+
+c.execute("""CREATE TABLE IF NOT EXISTS customers (id INTEGER PRIMARY KEY AUTOINCREMENT, first_name TEXT NOT NULL,last_name TEXT NOT NULL, email TEXT NOT NULL UNIQUE, phone TEXT, address TEXT, city TEXT, country TEXT);""")
+
+c.execute("""CREATE TABLE IF NOT EXISTS orders (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER NOT NULL, status TEXT CHECK( status IN ('Pending','Completed','Cancelled') ) NOT NULL DEFAULT 'Pending', order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, FOREIGN KEY (user_id) REFERENCES users(id));""")
+
+c.execute("""
+CREATE TABLE IF NOT EXISTS carts ( id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER NOT NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, FOREIGN KEY (user_id) REFERENCES users(id)); """)
+
+c.execute("""CREATE TABLE IF NOT EXISTS cart_items (id INTEGER PRIMARY KEY AUTOINCREMENT, cart_id INTEGER NOT NULL, product_id INTEGER NOT NULL, quantity INTEGER NOT NULL DEFAULT 1, FOREIGN KEY (cart_id) REFERENCES carts(id), FOREIGN KEY (product_id) REFERENCES products(id));""")
+
+
+
+conn.commit()
+c.close()
+conn.close()
+
+app.config['SESSION_TYPE'] = 'filesystem'
+app.config['SECRET_KEY'] = 'my_secret_key'
+
+Session(app)
 
 
 @app.route("/")
@@ -35,7 +70,7 @@ varsityGreen = shoes("Nike Low Varsity Green", 3000, "https://fashfash.dk/cdn/sh
 newBalance = shoes("New Balance", 700, "https://fashfash.dk/cdn/shop/files/1_9.webp?v=1689701425&width=535")
 jordan4L = shoes("Air Jordan 4 Lightning", 2400, "https://fashfash.dk/cdn/shop/products/air-jordan-4-lightning-2021-1-1000.png?v=1642112879&width=535")
 mcQueens = shoes("McQueens", 4000, "../static/img/mcqueens.png")
-argon = shoes("argon", 1900, "https://fashfash.dk/cdn/shop/products/11_7c06be55-ce49-4aca-a4d7-e0ab26899afb.png?v=1667422746&width=535")
+argon = shoes("Argon", 1900, "https://fashfash.dk/cdn/shop/products/11_7c06be55-ce49-4aca-a4d7-e0ab26899afb.png?v=1667422746&width=535")
 patent = shoes("Air Jordan 1 High Patent Red", 2400, "https://fashfash.dk/cdn/shop/products/image_d4135388-05e8-4825-aa99-253d3aeadbe0.png?v=1646264833&width=535")
 roseWhisper = shoes("Nike Dunk Low Rose Whisper", 1600, "https://fashfash.dk/cdn/shop/files/1_6.webp?v=1688998550&width=535")
 pineGreen = shoes("Air Jordan 4 Retro Pine Green", 3850, "https://fashfash.dk/cdn/shop/files/1_3.webp?v=1688569809&width=535")
