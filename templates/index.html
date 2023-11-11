@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+
+{% block title %} {% endblock %}
+
+{% block body %}
+
+<div class="hero max-h-screen " style=" height: 300px; background-image: url(https://daisyui.com/images/stock/photo-1507358522600-9f71e620c44e.jpg);">
+    <div class="hero-overlay bg-white bg-opacity-80"></div>
+    <div class="hero-content text-center">
+      <div class="max-w-md">
+        <h1 class="mb-5 text-5xl font-bold" style="font-style: normal;">Step into Your Sole Story</h1>
+        <p class="mb-5" style="font-style: normal;">Uncover the latest trends and timeless classics at your one-stop sneaker shop. At Sneaker76, every pair is a piece of art, waiting to take its first journey with you.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container mx-auto"> 
+  <button class=" btn btn-circle carousel-button prev" style="margin-left: 7% ;"  onclick="moveSlide(-1)">&#10094;</button>
+<div id="carousel" class="carousel">
+
+    <div class="carousel-slides">
+      {% for item in featured %}
+      <div class="carousel-slide">
+        <div class="card bg-base-100 " >
+          <figure><img src="{{ item.picture }}" class="card-img" id="pic" alt="Shoes" /></figure>
+          <div class="card-body">
+            <h2 class="card-title">
+              <a href="/redirect">
+                <strong>{{ item.name }}</strong>
+                <p class="price">{{ item.price }} DKK</p>
+              </a>
+            </h2>
+            <div class="card-actions justify-start">
+              <!-- Actions go here -->
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+  </div>
+  <button class=" btn btn-circle carousel-button next" style="margin-right: 7% ;" onclick="moveSlide(1)">&#10095;</button> 
+</div>
+  
+  
+
+
+ 
+    
+
+{% endblock %}

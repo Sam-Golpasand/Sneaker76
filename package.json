@@ -1,0 +1,21 @@
+{
+  "name": "tailwind",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tailwindcss -o output.css --minify",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tailwind": "npx tailwindcss -i ./static/src/input.css -o ./static/css/main.css --watch"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "daisyui": "^3.9.4",
+    "tailwindcss": "^3.3.5"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.2",
+    "gsap": "^3.12.2"
+  }
+}

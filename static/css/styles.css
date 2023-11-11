@@ -1,0 +1,103 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;1,400;1,700&display=swap');
+
+/* For Webkit browsers like Chrome, Safari, and Edge */
+::-webkit-scrollbar {
+    width: 12px; /* width of the entire scrollbar */
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: white; /* color of the tracking area */
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: gray; /* color of the scroll thumb */
+    border-radius: 20px; /* roundness of the scroll thumb */
+    border: 3px solid white; /* creates padding around the scroll thumb */
+  }
+  
+  /* For Firefox */
+  * {
+    scrollbar-width: thin; /* "auto" or "thin" */
+    scrollbar-color: gray white; /* thumb and track color */
+  }
+  
+
+
+
+html, body {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700;
+    font-style: italic;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+  }
+
+#pic {
+    /* Set the initial state of the image */
+    /* Other properties can be added here as well, such as transform, opacity, etc. */
+
+    /* Define the transition effect */
+    transition: transform 0.5s ease;
+}
+
+  #pic:hover{
+    transform: scale(1.1);
+
+  }
+  
+#namess {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+#DKK {
+    font-family: 'Roboto', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+}
+
+#DKK2  {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+}
+
+
+.carousel {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+.carousel-slides {
+  display: flex;
+  transition: transform 0.5s ease;
+}
+
+.carousel-slide {
+  min-width: 15%;
+  max-height: 350px;
+}
+
+
+
+.carousel-button {
+  z-index: 50;
+  position: absolute;
+
+
+  top: 60%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.prev {
+  left: 10px;
+}
+
+.next {
+  right: 10px;
+}
+

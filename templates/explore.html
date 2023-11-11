@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block title %}Home - My Website{% endblock %}
+{% block body %}
+
+
+
+<!-- Store Start -->
+
+
+<div class="container mx-auto flex flex-wrap" style="margin-top: 20px;">
+  {% for item in items  %}
+  <div class="card w-72 bg-base-100 "  style="height: 250px; width: 275px; margin: 20px;" >
+      <figure><img src={{item.picture}} style="height: 165px; width: 100%; object-fit: cover; border-radius: 1rem; " id="pic" alt="Shoes"/></figure>
+    <div class="card-body" style="padding: 0.1rem 0.1rem;">
+      <h2 class="card-title">
+        <a href="/redirect">
+          <b>{{ item.name }}</b>
+          <p id="DKK"> {{ item.price }} <span id="DKK2">DKK</span> </p>
+        </a>
+      </h2>
+      <div class="card-actions justify-start">
+      </div>
+    </div>
+
+  </div>
+  {% endfor %}
+</div>
+
+
+
+
+{% endblock %}
