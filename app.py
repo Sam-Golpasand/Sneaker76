@@ -13,27 +13,18 @@ bcrypt = Bcrypt(app)
 conn = sqlite3.connect("users.db")
 
 c = conn.cursor()
-
-
-
 c.execute("""CREATE TABLE IF NOT EXISTS products (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, price DECIMAL(10, 2) NOT NULL, picture TEXT, stock INTEGER NOT NULL, category TEXT);""")
-
-c.execute("""CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, first_name TEXT NOT NULL,last_name TEXT NOT NULL, email TEXT NOT NULL UNIQUE, phone TEXT, address TEXT, city TEXT, country TEXT);""")
-
+c.execute("""CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT NOT NULL UNIQUE, passhash TEXT);""")
 c.execute("""CREATE TABLE IF NOT EXISTS orders (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER NOT NULL, status TEXT CHECK( status IN ('Pending','Completed','Cancelled') ) NOT NULL DEFAULT 'Pending', order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, FOREIGN KEY (user_id) REFERENCES users(id));""")
-
 c.execute("""CREATE TABLE IF NOT EXISTS carts ( id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER NOT NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, FOREIGN KEY (user_id) REFERENCES users(id)); """)
-
 c.execute("""CREATE TABLE IF NOT EXISTS cart_items (id INTEGER PRIMARY KEY AUTOINCREMENT, cart_id INTEGER NOT NULL, product_id INTEGER NOT NULL, quantity INTEGER NOT NULL DEFAULT 1, FOREIGN KEY (cart_id) REFERENCES carts(id), FOREIGN KEY (product_id) REFERENCES products(id));""")
-
-
-
 conn.commit()
 c.close()
 conn.close()
 
 app.config['SESSION_TYPE'] = 'filesystem'
 app.config['SECRET_KEY'] = 'my_secret_key'
+
 
 Session(app)
 
@@ -74,18 +65,67 @@ def explore():
 
   return render_template("explore.html", items=items)
 
-@app.route("/login")
+@app.route("/login", methods=["GET", "POST"])
 def login():
-   return render_template("login.html")
+    if request.method == 'POST':
+        email = request.form.get("email")
+        password = request.form.get("password")
 
-@app.route("/register")
+
+        if not email:
+            raise Exception("You must enter a email!")
+        elif not password:
+            raise Exception("You must enter a password!")
+
+        conn = sqlite3.connect("users.db")
+        c = conn.cursor()
+
+        c.execute("SELECT * FROM users WHERE email = ?", (email,))
+        row = c.fetchone()
+
+        if row is None or not bcrypt.check_password_hash(row[2], password):
+            raise Exception("Password does not match")
+        
+        session["user_id"] = int(row[0])
+        conn.commit()
+
+        return redirect("/")
+    else:    
+        return render_template("login.html")
+
+@app.route("/register", methods=["GET", "POST"])
 def register():
-   return render_template("register.html")
+   if request.method == "POST":
+      
+      conn = sqlite3.connect("users.db")
+      c = conn.cursor()
+
+      email = request.form["email"]
+      password = request.form["password"]
+      confirm = request.form["confirm"]
+
+      if not email:
+          raise Exception("You must enter a email!")
+      elif not password:
+          raise Exception("You must enter a password!")
+      elif not confirm:
+          raise Exception("You must write confirmation password!")
+      elif password != confirm:
+          raise Exception("password and confirmation does not match")
+      
+      passhash = bcrypt.generate_password_hash(password).decode('utf-8')
+
+      try:
+        c.execute("INSERT INTO users (email, passhash) VALUES (?, ?)", (email, passhash))
+        conn.commit()
+        return redirect("/")
+      except Exception as e: print(e)
+
+   else:
+    return render_template("register.html")
 
 
-@app.route("/redirect")
-def redirect():
-  return render_template("redirect.html")
+
 
 
 class shoes:
@@ -95,6 +135,16 @@ class shoes:
     self.picture = picture
 
 
+@app.route("/logout")
+def logout():
+    session.clear()
+    return render_template("login.html")
+
+@app.errorhandler(Exception)
+def handle_error(error):
+    return f"An error occurred: {str(error)}", 500
+
+import time
 
 def insert_shoes_into_db(shoe_list):
     # Open a new database connection each time this function is called
@@ -104,13 +154,13 @@ def insert_shoes_into_db(shoe_list):
     for shoe in shoe_list:
         # Prepare an SQL statement to insert shoe data
         c.execute("INSERT INTO products (name, price, picture, stock, category) VALUES (?, ?, ?, ?, ?)",
-                  (shoe.name, shoe.price, shoe.picture, random.randint(3, 10), "shoes"))  
+                  (shoe.name, shoe.price, shoe.picture, random.randint(0, 10), "shoes"))  
 
     conn.commit()
     c.close()
     conn.close()
 
-#insert_shoes_into_db(items)
+
 
 retroWhite = shoes("Air Jordan 4 Retro White Midnight Navy", 2800, "https://fashfash.dk/cdn/shop/products/et.png?v=1667423285&width=535")
 varsityGreen = shoes("Nike Low Varsity Green", 3000, "https://fashfash.dk/cdn/shop/products/nike-dunk-low-team-green-1-1000.png?v=1642264764&width=535")
@@ -127,6 +177,8 @@ airForce1 = shoes('Air Force 1 "White"', 1050, "https://fashfash.dk/cdn/shop/pro
 whiteOreo = shoes("Jordan 4 White Oreo", 4500, "https://fashfash.dk/cdn/shop/products/air-jordan-4-retro-white-oreo-2021-1-1000.png?v=1642113668&width=535")
 
 items = [newBalance, jordan4L, varsityGreen, mcQueens, retroWhite, argon, patent, roseWhisper, pineGreen, lotteryPack, slideBone, airForce1, whiteOreo]
+
+#insert_shoes_into_db(items)
 
 if __name__ == '__main__':
   app.run(debug=True)

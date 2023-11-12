@@ -21,9 +21,9 @@
     <div class="carousel-slides">
 
       {% for item in featured %}
-      <div class="carousel-slide" data-aos="zoom">
+      <div class="carousel-slide" data-aos="zoom-in">
         <div class="card bg-base-100 " data-aos="zoom-in" >
-          <figure><img src="{{ item.picture }}" class="h-40 w-64 gap-4" id="pic" alt="Shoes" /></figure>
+          <figure><img src="{{ item.picture }}" class="h-40 w-64 gap-4" id="pic" alt="Shoes"/></figure>
           <div class="card-body">
             <h2 class="card-title">
               <a href="/redirect">
@@ -38,9 +38,8 @@
         </div>
       </div>
       {% endfor %}
-
     </div>
-    <button class=" btn btn-circle carousel-button next" onclick="moveSlide(1)">&#10095;</button> 
+    <button class="btn btn-circle carousel-button next" onclick="moveSlide(1)">&#10095;</button> 
   </div>
 
   <div class="grid grid-cols-4 gap-4 h-32" data-aos="zoom-in">

@@ -2,7 +2,7 @@ let index = 0; // the index of the current slide
 
 function moveSlide(step) {
   const slides = document.getElementsByClassName('carousel-slide');
-  const totalSlides = 9;
+  const totalSlides = 3;
 
   // Move the index step places and use modulo to wrap around.
   index = (index + step + totalSlides) % totalSlides;
