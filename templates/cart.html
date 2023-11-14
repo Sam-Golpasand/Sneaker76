@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+
+{% block title %} Cart {% endblock %}
+
+{% block body %}
+
+<div class="container mx-auto mt-36"> 
+
+
+
+  <div class="grid grid-cols-3">
+    <div>
+      <h1 class="text-2xl col-span-2">Cart</h1>
+    </div>
+    <div class="text-lg justify-end items-end place-content-end">
+      <a href="/">Back to store</a>
+    </div>
+  </div>
+  <div class="flex flex-col w-full">
+    <div class="divider"></div>
+  </div>
+  <div class="overflow-x-auto">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Price</th>
+          <th>Amount</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td> {} </td>
+        </tr>
+      </tbody>
+    
+    </table>
+  </div>
+
+
+</div>
+
+{% endblock %}

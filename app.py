@@ -23,7 +23,7 @@ c.close()
 conn.close()
 
 app.config['SESSION_TYPE'] = 'filesystem'
-app.config['SECRET_KEY'] = 'my_secret_key'
+app.config['SECRET_KEY'] = 'my_secret_key' # os.urandom(24)
 
 
 Session(app)
@@ -97,6 +97,14 @@ def login():
     else:    
         return render_template("login.html")
 
+@app.route("/cart")
+def cart():
+   if request.method == "POST":
+      c.execute("SELECT * FROM cart WHERE user_id = ?", (session["user_id"],))
+      row = c.fetchone()
+      return render_template("index.html")
+   else:
+      return render_template("cart.html")
 
 
 @app.route("/register", methods=["GET", "POST"])
