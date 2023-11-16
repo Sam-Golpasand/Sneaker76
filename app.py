@@ -1,7 +1,8 @@
-from flask import Flask, redirect, render_template, request, session
+from flask import Flask, redirect, render_template, request, session, flash
 from flask_bcrypt import Bcrypt
 import bcrypt
 from flask_session import Session
+import os
 from sam import login_required, dbCon, dbClose
 import sqlite3
 
@@ -9,7 +10,7 @@ app = Flask(__name__)
 bcrypt = Bcrypt(app)
 
 app.config['SESSION_TYPE'] = 'filesystem'
-app.config['SECRET_KEY'] = 'my_secret_key'  # Replace with a strong secret, possibly from os.urandom(24)
+app.config['SECRET_KEY'] = os.urandom(24)
 
 Session(app)
 
@@ -49,7 +50,7 @@ def login():
         password = request.form.get("password")
 
         if not email or not password:
-            return "Email and password required", 400
+            flash("Email and password required", "warning")
 
         conn, c = dbCon()
         c.execute("SELECT * FROM users WHERE email = ?", (email,))
@@ -57,10 +58,13 @@ def login():
 
         if row is None or not bcrypt.check_password_hash(row["passhash"], password):
             dbClose(conn, c)
-            return "Invalid email or password", 401
+            flash("Invalid email or password", "warning")
+            return redirect("/login")
+        
         
         session["user_id"] = row["id"]
         dbClose(conn, c)
+        flash("You have been logged in!", "info")
         return redirect("/")
     else:    
         return render_template("login.html")
@@ -105,7 +109,8 @@ def register():
 @app.route("/logout")
 def logout():
     session.clear()
-    return redirect("/login")
+    flash("You have been logged out!", "info")
+    return redirect("/")
 
 @app.errorhandler(Exception)
 def handle_error(error):
