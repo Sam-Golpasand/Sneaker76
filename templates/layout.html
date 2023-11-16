@@ -1,6 +1,6 @@
 <!-- layout.html -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="flex flex-col min-h-screen">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,7 +12,7 @@
     <title>{% block title %}{% endblock %}</title>
 
 </head>
-<body data-theme="cupcake">
+<body data-theme="autumn" class="flex flex-col flex-grow">
 
 <!-- Navbar Start -->
 
@@ -68,9 +68,12 @@
 
 <!-- Navbar End -->
 
+<!-- Main content -->
+<div class="flex-grow"> <!-- flex-grow will make sure this div takes up all available space pushing the footer down -->
   {% block body %}
-  
   {% endblock %}
+</div>
+<!-- Main content end -->
 
 
   <footer class="footer p-10 bg-base-100 text-base-content">

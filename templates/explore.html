@@ -5,11 +5,11 @@
 <!-- Store Start -->
 <div class="container mx-auto px-4 sm:px-6 lg:px-8 my-5 max-w-screen-xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-16 ">
   {% for item in items %}
-  <div class="card bg-base-100" data-aos="zoom-in">
-      <img src="{{ item.picture }}" class="object-cover h-40 w-full" id="pic" alt="Shoes"/>
+  <div class="card bg-base-100 " data-aos="zoom-in">
+      <img src="{{ item.picture }}" class="object-cover h-40 w-full " id="pic" alt="Shoes"/>
     <div class="card-body p-2">
       <h2 class="card-title">
-        <a href="/redirect">
+        <a href="/shoe/{{item.id}}">
           <strong >{{ item.name }}</strong>
           <p id="DKK" >{{ item.price }} <span id="DKK2"> DKK</span></p>
         </a>

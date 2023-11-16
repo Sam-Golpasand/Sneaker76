@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+
+{% block title %} {% endblock %}
+
+{% block body %}
+
+   <!-- Main container -->
+   <div class="container mx-auto mt-10 p-4">
+    <!-- Flex container for the image and details -->
+    <div class="flex flex-col lg:flex-row items-center">
+        <!-- Shoe image -->
+        <div class="flex-1">
+            <img src="{{ shoe.picture }}" alt="{{ shoe.name }}" class="lg:w-4/5 rounded-xl" id="pic"/>
+        </div>
+        <!-- Shoe details -->
+        <div class="flex-1 px-4">
+            <h2 class="text-2xl font-bold mb-2">{{ shoe.name }}</h2>
+            <p class="text-xl text-gray-800 mb-4" id="DKK">{{ shoe.price }} <span id="DKK2">DKK </span> </p>
+            <!-- Size selection -->
+            <div class="flex space-x-2 mb-4">
+                <!-- Dynamically generate size buttons -->
+                {% for size in shoe.sizes %}
+                    <button class="btn btn-outline btn-sm">{{ size }}</button>
+                {% endfor %}
+            </div>
+            <!-- Add to cart and buy now buttons -->
+            <div class="flex space-x-4">
+                <button class="btn btn-outline">Add to Cart</button>
+                <button class="btn btn-primary">Buy It Now</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

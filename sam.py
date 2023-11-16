@@ -24,6 +24,17 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
+def dbCon():
+    conn = sqlite3.connect("users.db")
+    conn.row_factory = sqlite3.Row
+    c = conn.cursor()
+    return conn, c
+
+def dbClose(conn, cursor=None):
+    if cursor:
+        cursor.close()
+    if conn:
+        conn.close()
 
 
 class shoes:
