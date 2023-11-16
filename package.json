@@ -1,14 +1,14 @@
 {
-  "name": "tailwind",
+  "name": "sneaker76",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "build": "tailwindcss -o output.css --minify",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "tailwind": "npx tailwindcss -i ./static/src/input.css -o ./static/css/main.css --watch"
+    "tailwind": "tailwindcss -i ./static/src/input.css -o ./static/css/main.css --watch"
   },
-  "author": "",
+  "author": "Sam Golpasand",
   "license": "ISC",
   "devDependencies": {
     "daisyui": "^3.9.4",
