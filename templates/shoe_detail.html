@@ -4,8 +4,8 @@
 
 {% block body %}
 
-   <!-- Main container -->
-   <div class="container mx-auto mt-10 p-4">
+<!-- Main container -->
+<div class="container mx-auto mt-10 p-4">
     <!-- Flex container for the image and details -->
     <div class="flex flex-col lg:flex-row items-center">
         <!-- Shoe image -->
@@ -15,19 +15,25 @@
         <!-- Shoe details -->
         <div class="flex-1 px-4">
             <h2 class="text-2xl font-bold mb-2">{{ shoe.name }}</h2>
-            <p class="text-xl text-gray-800 mb-4" id="DKK">{{ shoe.price }} <span id="DKK2">DKK </span> </p>
-            <!-- Size selection -->
-            <div class="flex space-x-2 mb-4">
-                <!-- Dynamically generate size buttons -->
-                {% for size in shoe.sizes %}
-                    <button class="btn btn-outline btn-sm">{{ size }}</button>
-                {% endfor %}
-            </div>
-            <!-- Add to cart and buy now buttons -->
-            <div class="flex space-x-4">
-                <button class="btn btn-outline">Add to Cart</button>
-                <button class="btn btn-primary">Buy It Now</button>
-            </div>
+            <p class="text-xl text-gray-800 mb-4" id="DKK">{{ shoe.price }} <span id="DKK2">DKK </span></p>
+            
+            <!-- Add to Cart Form -->
+            <form action="/add-to-cart/{{ shoe.id }}" method="post">
+                <!-- Size selection -->
+                <div class="flex space-x-2 mb-4">
+                    <!-- Size Buttons (optional if sizes are available) -->
+                    {% for size in shoe.sizes %}
+                        <input type="radio" name="size" value="{{ size }}" id="size-{{ size }}">
+                        <label for="size-{{ size }}" class="btn btn-outline btn-sm">{{ size }}</label>
+                    {% endfor %}
+                </div>
+                
+                <!-- Add to cart and buy now buttons -->
+                <div class="flex space-x-4">
+                    <button type="submit" class="btn btn-outline">Add to Cart</button>
+                    <button class="btn btn-primary">Buy It Now</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
