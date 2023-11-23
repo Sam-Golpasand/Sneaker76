@@ -36,17 +36,14 @@
       {% for item in featured %}
       <div class="carousel-slide" data-aos="zoom-in">
         <div class="card bg-base-100 " data-aos="zoom-in" >
+          <a href="/shoe/{{item.id}}">
           <figure><img src="{{ item.picture }}" class="h-40 w-64 gap-4" id="pic" alt="Shoes"/></figure>
           <div class="card-body">
             <h2 class="card-title">
-              <a href="/shoe/{{item.id}}">
                 <strong>{{ item.name }}</strong>
                 <p id="DKK"> {{ item.price }} <span id="DKK2">DKK</span> </p>
               </a>
             </h2>
-            <div class="card-actions justify-start">
-              <!-- Actions go here -->
-            </div>
           </div>
         </div>
       </div>
@@ -73,17 +70,17 @@
 
 
 
-  <div class="grid grid-cols-2 row-span-2 gap-4 h-64 mt-64 mb-64">
+  <div class="grid grid-cols-2 row-span-2 gap-4 h-64 mt-64 mb-64" data-aos="zoom-in">
     <div class="flex justify-center items-center text-2xl h-20">  
       <h3 class="font-normal not-italic" > Et par Nike Air Force 1 i hvid er et must-have for enhver modebevidst person. Disse ikoniske sko har været på markedet i over 40 år, og deres popularitet viser ingen tegn på at aftage. Deres klassiske, minimalistiske design passer til mange forskellige outfits, mens den bløde skummellemsål og støttende overdel sørger for god komfort hele dagen. Køb et par Nike Air Force 1 i hvid, og få et par sko, der både er stilfulde og behagelige at have på.</h3>
 
     </div>
     <div class="flex justify-center items-center text-2xl mt-20 h-20">
-      <img src="../static/img/Nike-SB-Dunk-Low-White-Gum-CD2563-101-Release-Date-Price-4.jpeg" class=" h-auto " alt="">
+      <img src="../static/img/Nike-SB-Dunk-Low-White-Gum-CD2563-101-Release-Date-Price-4.jpeg" class="h-auto rounded-md" alt="" data-aos="zoom-in">
       
     </div>
     <div class="row-start-2" >
-      <button class="btn btn-accent w-64 mt-8 " onclick="location.href = '/explore';" > Explore Now! </button>
+      <button class="btn btn-accent w-64 mt-8 " onclick="location.href = '/explore';" data-aos="zoom-in"> Explore Now! </button>
 
     </div>
   </div>

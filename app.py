@@ -96,12 +96,10 @@ def update_cart_item(item_id):
         return redirect("/cart")
 
     conn, c = dbCon()
-    # Ensure you're using the correct column name when retrieving the ID.
-    c.execute("SELECT id FROM cart_items WHERE id = ? AND cart_id = (SELECT id FROM carts WHERE user_id = ?)", (item_id, user_id))
+    c.execute("SELECT id FROM cart_items WHERE product_id = ? AND cart_id = (SELECT id FROM carts WHERE user_id = ?)", (item_id, user_id))
     cart_item = c.fetchone()
 
     if cart_item:
-        # Make sure 'id' is the correct column name in your table.
         c.execute("UPDATE cart_items SET quantity = ? WHERE id = ?", (new_quantity, cart_item['id']))
         conn.commit()
         flash("Cart updated successfully", "success")
@@ -129,7 +127,6 @@ def add_to_cart(product_id):
     
     item = c.fetchone()
     if item:
-        # Again, make sure 'id' is the correct column name in your table.
         c.execute("UPDATE cart_items SET quantity = quantity + 1 WHERE id = ?", (item['id'],))
     else:
         c.execute("INSERT INTO cart_items (cart_id, product_id, quantity) VALUES (?, ?, 1)", (cart_id, product_id))
@@ -139,6 +136,25 @@ def add_to_cart(product_id):
     flash("Item added to cart", "success")
     return redirect("/cart")
 
+@app.route("/remove-from-cart/<int:cart_item_id>", methods=["POST"])
+@login_required
+def remove_from_cart(cart_item_id):
+    user_id = session.get("user_id")
+    conn, c = dbCon()
+    c.execute("SELECT id FROM carts WHERE user_id = ?", (user_id,))
+    cart = c.fetchone()
+
+    if cart:
+        c.execute("""
+            DELETE FROM cart_items
+            WHERE product_id = ? AND cart_id = ?
+        """, (cart_item_id, cart['id']))
+        conn.commit()
+
+    dbClose(conn)
+
+    flash("Item removed from cart", "success")
+    return redirect('/cart')
 
 @app.route("/cart")
 @login_required
@@ -164,7 +180,7 @@ def cart():
     new_cart_items = []  # Create a new list to hold modified cart items
     for item in cart_items:
         new_item = dict(item)  # Convert the sqlite3.Row object to a dictionary
-        new_item['price'] = float(new_item['price'].replace(',', ''))  # Ensure price is a float
+        new_item['price'] = int(new_item['price'].replace(',', ''))  # Ensure price is a float
         item_total = new_item['price'] * new_item['quantity']  # Calculate total for this item
         total_price += item_total  # Accumulate to grand total
         new_cart_items.append(new_item)

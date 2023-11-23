@@ -1,3 +1,5 @@
 flask_session/
-pycache/
+__pycache__/
 node_modules/
+users.db
+/static/css/main.css
