@@ -206,8 +206,19 @@ def register():
 
 
         c.execute("INSERT INTO users (email, passhash) VALUES (?, ?)", (email, passhash))
-        conn.commit()
 
+        c.execute("SELECT * FROM users WHERE email = ?", (email,))
+        row = c.fetchone()
+
+        if row is None or not bcrypt.check_password_hash(row["passhash"], password):
+            dbClose(conn, c)
+            flash("Invalid email or password", "warning")
+            return redirect("/login")
+        
+        
+        session["user_id"] = row["id"]
+        flash("You have been logged in!", "info")
+        conn.commit()
         dbClose(conn, c)
         return redirect("/")
     else:

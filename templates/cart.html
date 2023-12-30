@@ -18,7 +18,7 @@
 {% endfor %}
 
 <!-- Flash Message Container -->
-<div class="fixed top-10 right-0 m-4 z-50" id="flash-message">
+<div class="fixed top-10 right-0 m-4 z-10" id="flash-message">
   {% with messages = get_flashed_messages() %}
     {% if messages %}
       {% for msg in messages %}
@@ -40,11 +40,11 @@
       {% if cart_items %}
         {% for item in cart_items %}
           <div class="justify-between mb-6 rounded-lg bg-white p-6 shadow-md sm:flex sm:justify-start">
-            <img src="{{ item.picture }}" alt="product-image" class="w-full rounded-lg sm:w-40" id="pic"/>
+            <a href="/shoe/{{ item.id }}"><img src="{{ item.picture }}" alt="product-image" class="w-full rounded-lg sm:w-40" id="pic"/></a>
             <!-- Update quantity form -->
             <form action="/update-cart-item/{{ item.id }}" method="post" class="sm:ml-4 sm:flex sm:w-full sm:justify-between">
               <div class="mt-5 sm:mt-0">
-                <h2 class="text-lg font-bold text-gray-900">{{ item.name }}</h2>
+                <h2 class="text-lg font-bold text-gray-900"><a href="/shoe/{{ item.id }}">{{ item.name }}</a></h2>
                 <p class="mt-1 text-xs text-gray-700"></p>
               </div>
               <div class="mt-4 flex justify-end sm:space-y-6 sm:mt-0 sm:block sm:space-x-6 ">
